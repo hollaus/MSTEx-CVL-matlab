@@ -16,6 +16,9 @@ References:
 [2] Scharf, L.L., and McWhorter, L.T., "Adaptive matched subspace detectors and adaptive coherence estimators," Signals, Systems and Computers, 1996. Conference Record of the Thirtieth Asilomar Conference on , vol., no., pp.1114,1117 vol.2, 3-6 Nov. 1996
 
 Usefull links:
+
 [MSTEx Contest]    http://www.synchromedia.ca/competition/ICDAR/mstexicdar2015.html
+
 [CVL]              http://www.caa.tuwien.ac.at/cvl/
+
 [nomacs]           http://www.nomacs.org
