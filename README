@@ -2,6 +2,7 @@
 Submission for the MSTEx competition (ICDAR 2015)
 
 Welcome to ViennaMS2
+
 This is the source code of the second Vienna UT MSTEx contest approach.
 It is licensed under the GPLv2 license (so feel free to use it).
 Authors:
@@ -19,5 +20,4 @@ Usefull links:
 
 [MSTEx Contest]    http://www.synchromedia.ca/competition/ICDAR/mstexicdar2015.html
 [CVL]              http://www.caa.tuwien.ac.at/cvl/
-
 [nomacs]           http://www.nomacs.org
