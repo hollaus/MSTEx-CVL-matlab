@@ -1,2 +1,21 @@
 # MSTEx-CVL-matlab
 Submission for the MSTEx competition (ICDAR 2015)
+
+Welcome to ViennaMS2
+This is the source code of the second Vienna UT MSTEx contest approach.
+It is licensed under the GPLv2 license (so feel free to use it).
+Authors:
+Fabian Hollaus  holl@caa.tuwien.ac.at
+Markus Diem     diem@caa.tuwien.ac.at
+
+Abstract:
+In the first step of the approach, the binarization method of Su et al. [1] is applied on a single image that has been captured at a wavelength of 500nm. The output of this method is used for the estimation of the mean spectral signature of the writing. This signature is used to train the Adaptive Coherence Estimator (ACE), which is suggested by Scharf and Whorter [2]. The output of the ACE detector is then Otsu thresholded and combined with the output of the binarization method of Su et al., by making use of heuristics. The source code of method is available at https://github.com/hollaus/MSTEx-CVL-matlab.
+
+References:
+[1] Lu, Shijian, Bolan Su, and Chew Lim Tan. "Document image binarization using background estimation and stroke edges." International Journal on Document Analysis and Recognition (IJDAR) 13.4 (2010): 303-314.
+[2] Scharf, L.L., and McWhorter, L.T., "Adaptive matched subspace detectors and adaptive coherence estimators," Signals, Systems and Computers, 1996. Conference Record of the Thirtieth Asilomar Conference on , vol., no., pp.1114,1117 vol.2, 3-6 Nov. 1996
+
+Usefull links:
+[MSTEx Contest]    http://www.synchromedia.ca/competition/ICDAR/mstexicdar2015.html
+[CVL]              http://www.caa.tuwien.ac.at/cvl/
+[nomacs]           http://www.nomacs.org
