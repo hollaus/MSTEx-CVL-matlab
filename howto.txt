@@ -1,0 +1,6 @@
+ ubmission for MS-TEx competition
+Authors: Fabian Hollaus, Markus Diem and Robert Sablatnig
+Computer Vision Lab, Vienna University of Technology
+
+The main file is binarMultiSpect: Usage: binarMultiSpect(folder_name, output_img_name). 
+The remaining m files are functions that are called by binarMultiSpect.
