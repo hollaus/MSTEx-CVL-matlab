@@ -5,6 +5,9 @@ Welcome to ViennaMS2
 
 This is the source code of the second Vienna UT MSTEx contest approach.
 It is licensed under the GPLv2 license (so feel free to use it).
+The C++ source code of the first approach submitted to MSTEx can be found here:
+https://github.com/diemmarkus/MSTEx-CVL
+
 Authors:
 Fabian Hollaus  holl@caa.tuwien.ac.at
 Markus Diem     diem@caa.tuwien.ac.at
