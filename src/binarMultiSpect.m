@@ -70,106 +70,106 @@ catch
 end
 
 
-function  cleanImg = removeFalsePositives(suImg, aceThresh)
-
-neighSize = 21;
-numSafeFGNeighbors = 1;
-
-falsePositiveCandidate = (suImg - aceThresh) > 0;
-safeFG = suImg .* aceThresh;
-sumSafeFG = imfilter(safeFG, ones(neighSize), 'symmetric');
-
-numSafeFG = falsePositiveCandidate .* sumSafeFG;
-
-falsePositives = falsePositiveCandidate .* (numSafeFG < numSafeFGNeighbors);
-
-cleanImg = (suImg - falsePositives) > 0;
-
-
-function aceSig = getAceSig(data, fgIdx, bgIdx)
-
-
-meanBg = mean(data(bgIdx,:));
-meanFg = mean(data(fgIdx,:));
-
-t = (meanFg - meanBg)';
-
-dataMR = data;
-dataMR = dataMR - repmat(meanBg, size(data,1), 1);
-
-C = cov(dataMR(bgIdx,:));
-Cinv = pinv(C);
-
-aceSig = (dataMR * Cinv * t) .* abs(dataMR * Cinv * t) ./ ((t' * Cinv * t) * sum((dataMR * Cinv) .* dataMR, 2));
-aceSig(aceSig<0) = 0;
-aceSig(aceSig>1) = 1;
-
-function bw = refineBorder(bw, img)
-
-% add 1px to permeter
-se = strel('disk', 1);
-bwd = imdilate(bw, se);
-% se = strel('disk', 1);
-% bwo = imerode(bwo, se);
-bwd = bwd&~bw;  % select border
-
-% remove 1px to permeter
-se = strel('disk', 1);
-bwe = imerode(bw, se);
-bwe = bw&~bwe;  % select border
-peri = bwe | bwd;
-
-img(~peri) = 0.5;    % other pixels schould not influence normalization
-img = normimg(img);
-img(~peri) = 0.5;    % ignore all other pixels
-
-bw = bw | img < 0.5;
-
-function cleanFGIdx = removeOutlier(data, fgIdx)
-
-data = data(fgIdx,:);
-medianData = median(data);
-stdData = std(data);
-
-diff = abs(data-repmat(medianData, size(data,1), 1));
-
-fac = 1/3;
-good = sum(diff > repmat(stdData*fac, size(diff,1), 1),2) <= 4;
-
-cleanFGIdx = fgIdx(good);
-
-function combined = combineBinaryMasks(bSoft, bHard)
-% Combines two binary images in such a way that only fg regions of the
-% bSoft are connected to bHard remain in the result.
+% function  cleanImg = removeFalsePositives(suImg, aceThresh)
 % 
-% bSoft = bSoft + bHard;
-
-lSoft = bwlabel(bSoft);
-lHard = lSoft .* bHard;
-
-badIdx = setdiff(unique(lSoft),unique(lHard));
-
-badMask = ismember(lSoft, badIdx);
-
-combined = bSoft .* ~badMask;
-
-b = bwmorph(combined, 'skel','Inf');
-missingLinks = b-b.*bHard > 0;
-missingLinksDil = imdilate(missingLinks, strel('disk',3));
-missingLinksMask = missingLinksDil.*bSoft;
-
-combined = bHard+missingLinksMask;
+% neighSize = 21;
+% numSafeFGNeighbors = 1;
+% 
+% falsePositiveCandidate = (suImg - aceThresh) > 0;
+% safeFG = suImg .* aceThresh;
+% sumSafeFG = imfilter(safeFG, ones(neighSize), 'symmetric');
+% 
+% numSafeFG = falsePositiveCandidate .* sumSafeFG;
+% 
+% falsePositives = falsePositiveCandidate .* (numSafeFG < numSafeFGNeighbors);
+% 
+% cleanImg = (suImg - falsePositives) > 0;
 
 
-function [bw] = removeBackground(img)
+% function aceSig = getAceSig(data, fgIdx, bgIdx)
+% 
+% 
+% meanBg = mean(data(bgIdx,:));
+% meanFg = mean(data(fgIdx,:));
+% 
+% t = (meanFg - meanBg)';
+% 
+% dataMR = data;
+% dataMR = dataMR - repmat(meanBg, size(data,1), 1);
+% 
+% C = cov(dataMR(bgIdx,:));
+% Cinv = pinv(C);
+% 
+% aceSig = (dataMR * Cinv * t) .* abs(dataMR * Cinv * t) ./ ((t' * Cinv * t) * sum((dataMR * Cinv) .* dataMR, 2));
+% aceSig(aceSig<0) = 0;
+% aceSig(aceSig>1) = 1;
 
-bg = imresize(im2double(img), 0.5, 'bicubic');
-se = strel('disk', 15);
-bg = imclose(bg, se);
-bg = bg > 0.1;
-bg = bwareaopen(bg, 400);
-bg = imresize(bg, size(img), 'nearest');
-bw = img&bg;
+% function bw = refineBorder(bw, img)
+% 
+% % add 1px to permeter
+% se = strel('disk', 1);
+% bwd = imdilate(bw, se);
+% % se = strel('disk', 1);
+% % bwo = imerode(bwo, se);
+% bwd = bwd&~bw;  % select border
+% 
+% % remove 1px to permeter
+% se = strel('disk', 1);
+% bwe = imerode(bw, se);
+% bwe = bw&~bwe;  % select border
+% peri = bwe | bwd;
+% 
+% img(~peri) = 0.5;    % other pixels schould not influence normalization
+% img = normimg(img);
+% img(~peri) = 0.5;    % ignore all other pixels
+% 
+% bw = bw | img < 0.5;
+
+% function cleanFGIdx = removeOutlier(data, fgIdx)
+% 
+% data = data(fgIdx,:);
+% medianData = median(data);
+% stdData = std(data);
+% 
+% diff = abs(data-repmat(medianData, size(data,1), 1));
+% 
+% fac = 1/3;
+% good = sum(diff > repmat(stdData*fac, size(diff,1), 1),2) <= 4;
+% 
+% cleanFGIdx = fgIdx(good);
+
+% function combined = combineBinaryMasks(bSoft, bHard)
+% % Combines two binary images in such a way that only fg regions of the
+% % bSoft are connected to bHard remain in the result.
+% % 
+% % bSoft = bSoft + bHard;
+% 
+% lSoft = bwlabel(bSoft);
+% lHard = lSoft .* bHard;
+% 
+% badIdx = setdiff(unique(lSoft),unique(lHard));
+% 
+% badMask = ismember(lSoft, badIdx);
+% 
+% combined = bSoft .* ~badMask;
+% 
+% b = bwmorph(combined, 'skel','Inf');
+% missingLinks = b-b.*bHard > 0;
+% missingLinksDil = imdilate(missingLinks, strel('disk',3));
+% missingLinksMask = missingLinksDil.*bSoft;
+% 
+% combined = bHard+missingLinksMask;
+
+
+% function [bw] = removeBackground(img)
+% 
+% bg = imresize(im2double(img), 0.5, 'bicubic');
+% se = strel('disk', 15);
+% bg = imclose(bg, se);
+% bg = bg > 0.1;
+% bg = bwareaopen(bg, 400);
+% bg = imresize(bg, size(img), 'nearest');
+% bw = img&bg;
 
 function [data, width, height] = readMultiSpect(folderName)
 
