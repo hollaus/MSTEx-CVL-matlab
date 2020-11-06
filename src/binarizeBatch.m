@@ -7,11 +7,19 @@ ids = getUniqueFileIds(srcPath, params);
 for i = 1 : length(ids)
     
     id = ids{i};
-    params.id = id;
-    fileNames = getFileList(srcPath, params);
-    [data, width, height] = readMSImages(srcPath, fileNames);
-    result = binarMS(data, width, height, params);
     
+    if strcmp(params.dbName, 'mstex')
+        msPath = fullfile(srcPath, id);
+    else        
+        params.id = id;
+        msPath = fullfile(srcPath);
+    end
+    
+    fileNames = getFileList(msPath, params);
+    
+    [data, width, height] = readMSImages(msPath, fileNames);
+    result = binarMS(data, width, height, params);
+    result = ~result;
     trgName = fullfile(trgPath, [id params.ext]);
     imwrite(result, trgName);
     
@@ -27,6 +35,7 @@ if nargin >= 1
 end
 
 defaultParams.ext = '.png';
+defaultParams.dbName = 'mstex';
 % This is required for the msbin dataset
 defaultParams.separator = '_';
 

@@ -2,7 +2,7 @@ function fileList = getFileList(path, varargin)
 
 params = parseInputs(varargin{:});
 
-if (~isdir(path))
+if (~isfolder(path))
     disp([path ' is not a directory']);
     fileList = [];
     return;
@@ -10,7 +10,7 @@ end
 
 
 if (nargin == 1)
-    fileList = dir(path);
+    fileList = dir(fullfile(path));
 else 
     fileList = dir(fullfile(path, ['*' params.ext]));
 end

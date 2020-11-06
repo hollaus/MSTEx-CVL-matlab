@@ -28,8 +28,8 @@ combinedSu = combineBinaryMasks(bc, cleanImg);
 combinedSu = removeBackground(combinedSu);
 
 
-suAceImg = combinedSu & aceImg > 0.1;
-suAceImg = suAceImg | aceImg > 0.9;
+suAceImg = combinedSu & aceImg > params.aceThreshLow;
+suAceImg = suAceImg | aceImg > params.aceThreshHigh;
 
 output = refineBorder(suAceImg, writingImg);
 
@@ -46,8 +46,11 @@ end
 
 % These are the su params for the msbin dataset:
 defaultParams.writingIdx = 2;
-defaultParams.neighSize = 71;
-defaultParams.numNeighbors = 100;
+defaultParams.aceThreshLow = .1;
+defaultParams.aceThreshHigh = .9;
+% defaultParams.neighSize = 71;
+% defaultParams.numNeighbors = 100;
+% defaultParams = [];
 
 params = mergeParams(defaultParams, params);
 

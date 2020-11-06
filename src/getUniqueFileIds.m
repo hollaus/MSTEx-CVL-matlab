@@ -2,26 +2,35 @@ function uniqueIds = getUniqueFileIds(pathName, varargin)
 
 params = parseInputs(varargin{:});
 
-fileNames = getFileList(pathName, params);
-
-% Get the unique fileNames:
-sepIdx = strfind(fileNames, params.separator);
-
-ids = fileNames;
-for i = 1 : length(fileNames)
+if strcmp(params.dbName, 'mstex')
     
-    if (isempty(sepIdx{i}))
-        continue;
+    d = dir(pathName);
+    dfolders = d([d(:).isdir]); 
+    dfolders = dfolders(~ismember({dfolders(:).name},{'.','..'}));
+    uniqueIds = {dfolders(:).name};
+    
+else
+    
+    fileNames = getFileList(pathName, params);
+    % Get the unique fileNames:
+    sepIdx = strfind(fileNames, params.separator);
+
+    ids = fileNames;
+    for i = 1 : length(fileNames)
+
+        if (isempty(sepIdx{i}))
+            continue;
+        end
+        actSepIdx = sepIdx{i};
+        f = fileNames{i};
+        ids{i} = f(1:actSepIdx-1);
+
     end
-    
-    actSepIdx = sepIdx{i};
-   
-    f = fileNames{i};
-    ids{i} = f(1:actSepIdx-1);
-    
+
+    uniqueIds = unique(ids);
+        
 end
 
-uniqueIds = unique(ids);
 
 
 function params = parseInputs(varargin)

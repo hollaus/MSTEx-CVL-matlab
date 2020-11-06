@@ -14,6 +14,9 @@ for i = 1 : numChannels
     if (i > 1)
        img = imread(fullfile(folderName, fileNames{i}));
        img = im2double(img);
+%        TODO: check if normalization should be used:
+%         img = img-min(img(:));
+%         img = img./max(img(:));
     end
     data(:,i) = reshape(img, numPixels, 1);
     
