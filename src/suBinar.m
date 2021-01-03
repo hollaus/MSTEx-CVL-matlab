@@ -85,12 +85,20 @@ c1(c1 == Inf) = 0;
 c2 = conIntensitySum.^2 ./ sumImg.^2;
 c2(c2 == Inf) = 0;
 
-conIntensityStd = sqrt(max((c1 - c2),0));
-
-% intensityCandidates = img <= conIntensityMean;
-
+useOriginalEq = false;
+if (~isfield(params, 'dbName') || strcmp(params.dbName, 'mstex'))
+    useOriginalEq = true;
+end
+if useOriginalEq
 % This is the original equation found in the su paper:
-intensityCandidates = (img <= (conIntensityMean - conIntensityStd /2));
+    conIntensityStd = sqrt(max((c1 - c2),0));
+    intensityCandidates = (img <= (conIntensityMean - conIntensityStd /2));    
+else
+%     In case of the msbin the grayvalues seem too varying and hence the
+%     conIntensityStd is too high, which removes a lot of true positives: 
+    intensityCandidates = (img <= (conIntensityMean));
+end
+
 binaryImg = logical(candidates .* intensityCandidates);
 
 if (params.removeNoise)

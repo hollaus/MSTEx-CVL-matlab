@@ -10,7 +10,15 @@ for i = 1 : length(ids)
     
     if strcmp(params.dbName, 'mstex')
         msPath = fullfile(srcPath, id);
-    else        
+    elseif strcmp(params.dbName, 'msbin')
+        params.numNeighbors = 71;
+        params.neighSize = 150;
+        params.noiseArea = 50;
+%         params.aceThreshLow = 0;
+%         params.aceThreshHigh = 0.4;
+%         params.neighSize = 51;
+%         params.noiseArea = ;
+        params.removeNoise = 1;
         params.id = id;
         msPath = fullfile(srcPath);
     end

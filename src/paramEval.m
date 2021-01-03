@@ -11,7 +11,7 @@ else
 end
 
 % Save the parameter set:
-save(paramset, fullfile(tP, 'paramset.mat'))
+save(fullfile(tP, 'paramset.mat'), 'paramset')
 
 for i = 1 : length(paramset)
     
@@ -24,12 +24,13 @@ for i = 1 : length(paramset)
     end
     
     if isfolder(tActP)
-        error(['The target folder is existing. ' ...
-            'Execution is stopped to prevent overwritten images.']);
+%         error(['The target folder is existing. ' ...
+%             'Execution is stopped to prevent overwritten images.']);
+        warning('The target folder is existing.');
     else
         mkdir(tActP);
     end
-    
+    disp(['Evaluating params: ' num2str(i) ' / ' num2str(length(paramset))]);
     binarizeBatch(sP, tActP, params);
     
 end
